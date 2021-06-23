@@ -92,13 +92,14 @@ public class ClothPlane9 : MonoBehaviour
     #region Self Collision Parameters
 
     Vector3 p1, p2, p3, p4,
-    plast1, plast2, plast3, plast4,
+    plast1,
     delp1, delp2, delp3, delp4,
-    n, n1, n2, n3, nlast, nlast1, nlast2, nlast3;
-    float h, h1, h2, h3, hlast, hlast1, hlast2, hlast3;
+    n;
+    float h;
     Vector3[] poslast;
-
-    Color[] collided;
+    float k; Vector3 v, w, i;
+    Vector3 pm1, pm2, pm3, pr1, pr2, pr3, pi1, pi2, pi3;
+    float barycentric1, barycentric2, barycentric3;
 
     #endregion
 
@@ -116,6 +117,8 @@ public class ClothPlane9 : MonoBehaviour
         GraphColoring();
 
         ForDistanceConstraints();
+
+        ForBendingConstraints();
 
         ForSelfCollisionConstraints();
 
@@ -157,7 +160,6 @@ public class ClothPlane9 : MonoBehaviour
         mesh.triangles = triangles;
 
         mesh.RecalculateNormals();
-
 
     }
 
@@ -203,7 +205,7 @@ public class ClothPlane9 : MonoBehaviour
         weights[0] = 0f;
         //weights[10] = 0f;
         //weights[6] = 2f;
-        weights[110] = 0f;
+        //weights[110] = 0f;
         //weights[50] = 0f;
 
         fors[0] = forces; // assigning force to the array for buffer
@@ -252,6 +254,7 @@ public class ClothPlane9 : MonoBehaviour
         for (int x = 0; x < gridLength; x++)
         {
             int count = 0;
+
             for (int y = 0; y < tricount; y++)
             {
                 for (int z = 0; z < 3; z++)
@@ -517,22 +520,106 @@ public class ClothPlane9 : MonoBehaviour
     }
     #endregion
 
+    #region Bending Constraint
+
+    void ForBendingConstraints()
+    {
+        int commonvertex1, commonvertex2, commonvertex3;
+        int dihedralcount = 0;
+        int pairindex = 0;
+        int[] dihedralpairs;
+
+        for (int x = 0; x < tricount; x++)
+        {
+            for (int y = 0; y < tricount; y++)
+            {
+                if (x < y)
+                {
+                    commonvertex1 = 0;
+                    commonvertex2 = 0;
+                    commonvertex3 = 0;
+
+                    for (int z = 0; z < 3; z++)
+                    {
+                        if (triangles[3 * x + 0] == triangles[3 * y + z])
+                        {
+                            commonvertex1++;
+                        }
+
+                        if (triangles[3 * x + 1] == triangles[3 * y + z])
+                        {
+                            commonvertex2++;
+                        }
+                        
+                        if (triangles[3 * x + 2] == triangles[3 * y + z])
+                        {
+                            commonvertex3++;
+                        }
+                    }
+
+                    if ((commonvertex1 == 1 && commonvertex2 == 1) || (commonvertex3 == 1 && commonvertex2 == 1) || (commonvertex1 == 1 && commonvertex3 == 1))
+                    {
+                        dihedralcount++;
+                    }
+                }
+            }
+        }
+        Debug.Log("Dihedral pairs = " + dihedralcount);
+        dihedralpairs = new int[2 * dihedralcount];
+
+        for (int x = 0; x < tricount; x++)
+        {
+            for (int y = 0; y < tricount; y++)
+            {
+                if (x < y)
+                {
+                    commonvertex1 = 0;
+                    commonvertex2 = 0;
+                    commonvertex3 = 0;
+
+                    for (int z = 0; z < 3; z++)
+                    {
+                        if (triangles[3 * x + 0] == triangles[3 * y + z])
+                        {
+                            commonvertex1++;
+                        }
+
+                        if (triangles[3 * x + 1] == triangles[3 * y + z])
+                        {
+                            commonvertex2++;
+                        }
+
+                        if (triangles[3 * x + 2] == triangles[3 * y + z])
+                        {
+                            commonvertex3++;
+                        }
+                    }
+
+                    if ((commonvertex1 == 1 && commonvertex2 == 1) || (commonvertex3 == 1 && commonvertex2 == 1) || (commonvertex1 == 1 && commonvertex3 == 1))
+                    {
+                        dihedralpairs[2 * pairindex] = x;
+                        dihedralpairs[2 * pairindex + 1] = y;
+                        pairindex++;
+                    }
+                }
+            }
+        }
+
+    }
+
+    #endregion
+
     #region Self Collision Constraint
     void ForSelfCollisionConstraints()
     {
         /*h = new float[3 * 4];
         hlast = new float[3 * 4];*/
         poslast = new Vector3[gridLength];
-        collided = new Color[gridLength];
         System.Array.Copy(pos, 0, poslast, 0, gridLength);
     }
 
     void SelfCollisionConstraint()
     {
-        float k; Vector3 v, w, i;
-        Vector3 pm1, pm2, pm3, pr1, pr2, pr3, pi1, pi2, pi3;
-        float barycentric1, barycentric2, barycentric3;
-
         for (int iter = 0; iter < 1; iter++)
         {
             int detectioncount = 0;
@@ -584,10 +671,10 @@ public class ClothPlane9 : MonoBehaviour
                         {
                             detectioncount++;
 
-                            if (collisiondistance < 2f )
+                            if (collisiondistance < maxstiff )
                             {
                                 float thickness = h;
-                                float scale = -0.1f;
+                                float scale = -0.09f;
                                 delp1 = n;
                                 delp3 = (Vector3.Cross(p4 - p2, p1 - p2) + Vector3.Cross(n, p4 - p2) * h) / length;
                                 delp4 = -1f * (Vector3.Cross(p3 - p2, p1 - p2) + Vector3.Cross(n, p3 - p2) * h) / length;
