@@ -1,0 +1,16 @@
+﻿#pragma kernel tryupdate
+
+RWStructuredBuffer<float3> pos;
+RWStructuredBuffer<float3> vel;
+RWStructuredBuffer<float3> poslast;
+RWStructuredBuffer<float> weights;
+float timer;
+
+[numthreads(200,1,1)]
+void tryupdate (uint3 id : SV_DispatchThreadID)
+{
+    vel[id.x] = ((pos[id.x] - poslast[id.x]) / timer); 
+    poslast[id.x] = pos[id.x];
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////

@@ -1,0 +1,14 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel SelfCollisionCompute
+
+
+struct constraint
+{
+    uint p1,p2,p3;
+};
+
+[numthreads(8,8,1)]
+void SelfCollisionCompute (uint3 id : SV_DispatchThreadID)
+{
+    // TODO: insert actual code here!
+}

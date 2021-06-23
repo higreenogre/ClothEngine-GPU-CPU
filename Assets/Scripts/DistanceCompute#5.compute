@@ -1,0 +1,74 @@
+﻿#pragma kernel DistanceCompute
+
+
+struct constraint
+{
+    uint p1,p2,p3;
+};
+
+/*struct length
+{
+    float3 p1,p2,p3;
+};*/
+
+RWStructuredBuffer<float> weights;
+RWStructuredBuffer<float3> pos;
+RWStructuredBuffer<constraint> constraints;
+//RWStructuredBuffer<length> lengths;
+RWStructuredBuffer<float3> lp1;
+RWStructuredBuffer<float3> lp2;
+RWStructuredBuffer<float3> lp3;
+RWStructuredBuffer<float> stiffness;
+
+uint loop;
+float3 deltap;
+float3 deltap2;
+float3 deltap1;
+uint iterations;
+uint j;
+
+[numthreads(300,1,1)]
+void DistanceCompute (uint3 id : SV_DispatchThreadID)
+{
+    for (int iter=0; iter<50; iter++)
+    {
+        for (uint i=0;i< loop;i++)
+        {
+            lp1[id.x] = pos[constraints[id.x].p2]-pos[constraints[id.x].p1];
+            lp2[id.x] = pos[constraints[id.x].p3]-pos[constraints[id.x].p2];
+            lp3[id.x] = pos[constraints[id.x].p1]-pos[constraints[id.x].p3];
+
+            // optimize this from sequential to parallel (Parallel Gauss Seidel) 
+            if (i%3 == 0)
+            {
+                j=(i)/ 3;
+                deltap = lp1[j];
+                deltap1 = (weights[constraints[j].p1] / (weights[constraints[j].p1] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
+                deltap2 = (weights[constraints[j].p2] / (weights[constraints[j].p1] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
+                pos[constraints[j].p1] += 1.01f*deltap1;
+                pos[constraints[j].p2] -= 1.01f*deltap2;
+            }
+            else if (i % 3 == 1)
+            {
+                j = (i - 1) / 3;
+                deltap = lp2[j];
+                deltap1 = (weights[constraints[j].p2] / (weights[constraints[j].p3] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
+                deltap2 = (weights[constraints[j].p3] / (weights[constraints[j].p3] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
+                pos[constraints[j].p2] += 1.01f*deltap1;
+                pos[constraints[j].p3] -= 1.01f*deltap2;
+            }
+            else
+            {
+                j = (i - 2) / 3;
+                deltap = lp3[j];
+                deltap1 = (weights[constraints[j].p3] / (weights[constraints[j].p3] + weights[constraints[j].p1])) * (length(deltap) - stiffness[i]) * normalize(deltap);
+                deltap2 = (weights[constraints[j].p1] / (weights[constraints[j].p3] + weights[constraints[j].p1])) * (length(deltap) - stiffness[i]) * normalize(deltap);
+                pos[constraints[j].p3] += 1.01f*deltap1;
+                pos[constraints[j].p1] -= 1.01f*deltap2;
+            }
+        }
+    }      
+}
+
+
+

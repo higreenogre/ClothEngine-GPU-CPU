@@ -1,0 +1,26 @@
+﻿#pragma kernel DistanceCompute
+
+
+//RWStructuredBuffer<float> weight;
+RWStructuredBuffer<float3> pos;
+RWStructuredBuffer<uint> Trilistp1;
+RWStructuredBuffer<uint> Trilistp2; 
+RWStructuredBuffer<uint> Trilistp3;
+RWStructuredBuffer<float3> lengthp1;
+RWStructuredBuffer<float3> lengthp2;
+RWStructuredBuffer<float3> lengthp3 ;
+//float stiffness;
+//int TriCount;
+//float3 deltap;
+//float3 deltap2;
+//float3 deltap1;
+//uint iterations;
+//uint i;
+
+[numthreads(1024,1,1)]
+void DistanceCompute (uint3 id : SV_DispatchThreadID)
+{
+    lengthp1[id.x] = pos[Trilistp2[id.x]]-pos[Trilistp1[id.x]];
+    lengthp2[id.x] = pos[Trilistp3[id.x]]-pos[Trilistp2[id.x]];
+    lengthp3[id.x] = pos[Trilistp1[id.x]]-pos[Trilistp3[id.x]];
+}

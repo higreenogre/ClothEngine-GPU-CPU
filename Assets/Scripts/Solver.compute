@@ -1,0 +1,41 @@
+﻿// Each #kernel tells which function to compile; you can have many kernels
+#pragma kernel trydispatch
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+/*struct data
+{
+    float3 P,V;
+    float 
+}*/
+
+RWStructuredBuffer<float3> pos;
+RWStructuredBuffer<float3> vel;
+RWStructuredBuffer<float3> forces;
+RWStructuredBuffer<float> weights;
+float timer;
+float damp;
+
+[numthreads(32,1,1)]
+void trydispatch (uint3 id : SV_DispatchThreadID)
+{
+    vel[id.x] = damp * ( vel[id.x] + timer * forces[0]  * weights[id.x]);
+    pos[id.x] = pos[id.x] + vel[id.x] * timer ;
+}
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/*
+#pragma kernel tryupdate
+
+//RWStructuredBuffer<float3> pos;
+//RWStructuredBuffer<float3> vel;
+RWStructuredBuffer<float3> poslast;
+//float timer;
+
+[numthreads(32,1,1)]
+void tryupdate (uint3 id : SV_DispatchThreadID)
+{
+    vel[id.x] = (pos[id.x] - poslast[id.x])/ timer; 
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+*/
