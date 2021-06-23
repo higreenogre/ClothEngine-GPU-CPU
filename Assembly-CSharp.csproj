@@ -9,7 +9,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{F8CA7D5F-6A74-78AB-2948-A00F0E67B942}</ProjectGuid>
+    <ProjectGuid>{FDE5C172-1074-87A7-476A-4070F8E2E96B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -276,7 +276,7 @@
       <HintPath>D:/Programming/Unity/Personal/2019.4.16f1/Editor/Data/Managed/UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/PackageCache/com.unity.ext.nunit@1.0.5/net35/unity-custom/nunit.framework.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/PackageCache/com.unity.ext.nunit@1.0.5/net35/unity-custom/nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="netstandard">
       <HintPath>D:/Programming/Unity/Personal/2019.4.16f1/Editor/Data/NetStandard/ref/2.0.0/netstandard.dll</HintPath>
@@ -624,31 +624,31 @@
       <HintPath>D:/Programming/Unity/Personal/2019.4.16f1/Editor/Data/NetStandard/compat/2.0.0/shims/netfx/System.Xml.Serialization.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline.Editor">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/Unity.Timeline.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.VSCode.Editor">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/Unity.VSCode.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro.Editor">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/Unity.TextMeshPro.Editor.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/UnityEngine.UI.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Timeline">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/Unity.Timeline.dll</HintPath>
     </Reference>
     <Reference Include="Unity.CollabProxy.Editor">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/Unity.CollabProxy.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.Rider.Editor">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/Unity.Rider.Editor.dll</HintPath>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/Unity.TextMeshPro.dll</HintPath>
     </Reference>
     <Reference Include="UnityEditor.UI">
-      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/MagePBD1/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
+      <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup></ItemGroup>
