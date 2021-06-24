@@ -123,9 +123,6 @@ public class ClothPlane10 : MonoBehaviour
 
     // Start is called before the first frame update
     void Awake()
-    {
-        mesh = GetComponent<MeshFilter>().mesh;
-    }
 
     // Start is called before the first frame update
     void Start()
