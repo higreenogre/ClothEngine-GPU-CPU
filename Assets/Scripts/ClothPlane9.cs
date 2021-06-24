@@ -493,7 +493,7 @@ public class ClothPlane9 : MonoBehaviour
 
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("weights"), Wbuffer);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("pos"), Pbuffer);
-        distanceshader.SetInt(Shader.PropertyToID("loop"), loopdistance);
+        distanceshader.SetInt(Shader.PropertyToID("loopdistance"), loopdistance);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("stiffness"), stiffnessbuffer);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("constraints"), constraintbuffer);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("lp1"), lengthp1);
@@ -564,6 +564,7 @@ public class ClothPlane9 : MonoBehaviour
                 }
             }
         }
+
         Debug.Log("Dihedral pairs = " + dihedralcount);
         dihedralpairs = new int[2 * dihedralcount];
 

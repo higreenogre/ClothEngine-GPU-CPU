@@ -409,6 +409,7 @@ GameObject:
   - component: {fileID: 1345686081}
   - component: {fileID: 1345686082}
   - component: {fileID: 1345686083}
+  - component: {fileID: 1345686084}
   m_Layer: 0
   m_Name: Aladdin'sCarpetLite
   m_TagString: Untagged
@@ -659,9 +660,29 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1345686070}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9483034858c73804986341e9603ed38a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cellsize: 1
+  damp: 0.93
+  forces: {x: -5, y: -6, z: 0}
+  pos: []
+  timer: 0.15
+  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
+  updateshader: {fileID: 7200000, guid: 45d008d699f9687449ced310041a1e4b, type: 3}
+  distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
+--- !u!114 &1345686084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1345686070}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d155ef348bcebfd4786641b0499aac3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cellsize: 1
@@ -672,6 +693,7 @@ MonoBehaviour:
   shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
   updateshader: {fileID: 7200000, guid: 45d008d699f9687449ced310041a1e4b, type: 3}
   distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
+  bendingshader: {fileID: 7200000, guid: 54b3dab28532b1e4b967b57edc2b270c, type: 3}
 --- !u!1 &1433782352
 GameObject:
   m_ObjectHideFlags: 0

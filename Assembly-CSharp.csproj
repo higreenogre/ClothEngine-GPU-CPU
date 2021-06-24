@@ -78,12 +78,14 @@
     <Compile Include="Assets\Scripts Old\Shrink5.cs" />
     <Compile Include="Assets\Scripts Old\Shrink6.cs" />
     <Compile Include="Assets\Scripts Old\Shrink7.cs" />
+    <Compile Include="Assets\Scripts\ClothPlane10.cs" />
     <Compile Include="Assets\Scripts\ClothPlane7.cs" />
     <Compile Include="Assets\Scripts\ClothPlane8.cs" />
     <Compile Include="Assets\Scripts\ClothPlane9.cs" />
     <None Include="Assets\Scripts Old\DistanceConstraintCompute.compute" />
     <None Include="Assets\Scripts Old\DistanceCompute#1.compute" />
     <None Include="Assets\Scripts Old\DistanceCompute#2.compute" />
+    <None Include="Assets\Scripts\BendingCompute#1.compute" />
     <None Include="Assets\Scripts Old\ConstraintCompute.compute" />
     <None Include="Assets\Scripts\Update Velocity.compute" />
     <None Include="Assets\Scripts\DistanceCompute#5.compute" />

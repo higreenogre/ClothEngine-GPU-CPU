@@ -20,7 +20,7 @@ RWStructuredBuffer<float3> lp2;
 RWStructuredBuffer<float3> lp3;
 RWStructuredBuffer<float> stiffness;
 
-uint loop;
+uint loopdistance;
 float3 deltap;
 float3 deltap2;
 float3 deltap1;
@@ -32,7 +32,7 @@ void DistanceCompute (uint3 id : SV_DispatchThreadID)
 {
     for (int iter=0; iter<15; iter++)
     {
-        for (uint i=0;i< loop;i++)
+        for (uint i=0;i< loopdistance;i++)
         {
             lp1[id.x] = pos[constraints[id.x].p2]-pos[constraints[id.x].p1];
             lp2[id.x] = pos[constraints[id.x].p3]-pos[constraints[id.x].p2];

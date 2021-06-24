@@ -1,0 +1,16 @@
+﻿
+#pragma kernel BendingCompute
+
+RWStructuredBuffer<uint> dihedralpairs;
+RWStructuredBuffer<float> weights;
+RWStructuredBuffer<float3> pos;
+
+uint loopbending;
+
+[numthreads(8,1,1)]
+void BendingCompute (uint3 id : SV_DispatchThreadID)
+{
+
+
+
+}
