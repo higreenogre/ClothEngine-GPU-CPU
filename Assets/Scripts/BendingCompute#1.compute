@@ -1,17 +1,54 @@
 ﻿
 #pragma kernel BendingCompute
 
-RWStructuredBuffer<uint> dihedralpairs;
+struct constraintbending
+{
+    uint p1,p2,p3,p4;
+    float3 pp2,pp3,pp4,n1,n2,q1,q2,q3,q4,dp1,dp2,dp3,dp4;
+    float d,cbend,sum;
+};
+
+RWStructuredBuffer<constraintbending> bending;
 RWStructuredBuffer<float> weights;
 RWStructuredBuffer<float3> pos;
+//float d,cbend,sum;
+//float3 pp2,pp3,pp4,n1,n2,q1,q2,q3,q4,dp1,dp2,dp3,dp4;
 
 uint loopbending;
 
-[numthreads(8,1,1)]
+[numthreads(300,1,1)]
 void BendingCompute (uint3 id : SV_DispatchThreadID)
 {
+    for (uint i=0; i< loopbending; i++)
+    {
+        
+        bending[i].pp2 = pos[bending[i].p2] - pos[bending[i].p1];
+        bending[i].pp3 = pos[bending[i].p3] - pos[bending[i].p1];
+        bending[i].pp4 = pos[bending[i].p4] - pos[bending[i].p1];
 
+        bending[i].n1 = normalize(cross(bending[i].pp2,bending[i].pp3));
+        bending[i].n2 = normalize(cross(bending[i].pp2,bending[i].pp4));
 
+        bending[i].d = dot(bending[i].n1,bending[i].n2);
+        bending[i].cbend = acos(bending[i].d);
 
+        bending[i].q3 = (cross(bending[i].pp2,bending[i].n2) + bending[i].d * cross(bending[i].n1,bending[i].pp2)) / length(cross(bending[i].pp2,bending[i].pp3));
+        bending[i].q4 = (cross(bending[i].pp2,bending[i].n1) + bending[i].d * cross(bending[i].n2,bending[i].pp2)) / length(cross(bending[i].pp2,bending[i].pp4));
+        bending[i].q2 = - ((cross(bending[i].pp3,bending[i].n2) + bending[i].d * cross(bending[i].n1,bending[i].pp3)) / length(cross(bending[i].pp2,bending[i].pp3))) - ((cross(bending[i].pp4,bending[i].n1) + bending[i].d * cross(bending[i].n2,bending[i].pp4)) / length(cross(bending[i].pp2,bending[i].pp4)));
+         
+        bending[i].q1 = -bending[i].q2 -bending[i].q3 -bending[i].q4;
 
+        bending[i].sum = weights[bending[i].p1] * length(bending[i].q1) * length(bending[i].q1) + weights[bending[i].p2] * length(bending[i].q2) * length(bending[i].q2) + weights[bending[i].p3] * length(bending[i].q3) * length(bending[i].q3) + weights[bending[i].p4] * length(bending[i].q4) * length(bending[i].q4);
+
+        bending[i].dp1 = (- weights[bending[i].p1] * sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q1 ) / bending[i].sum;
+        bending[i].dp2 = (- weights[bending[i].p2] * sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q2 ) / bending[i].sum;
+        bending[i].dp3 = (- weights[bending[i].p3] * sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q3 ) / bending[i].sum;
+        bending[i].dp4 = (- weights[bending[i].p4] * sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q4 ) / bending[i].sum;
+
+        pos[bending[i].p1] = pos[bending[i].p1] - bending[i].dp1; 
+        pos[bending[i].p2] = pos[bending[i].p2] - bending[i].dp2; 
+        pos[bending[i].p3] = pos[bending[i].p3] - bending[i].dp3; 
+        pos[bending[i].p4] = pos[bending[i].p4] - bending[i].dp4;
+    }
 }
+ 

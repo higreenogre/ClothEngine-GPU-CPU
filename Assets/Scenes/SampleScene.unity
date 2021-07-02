@@ -400,14 +400,6 @@ GameObject:
   - component: {fileID: 1345686074}
   - component: {fileID: 1345686073}
   - component: {fileID: 1345686072}
-  - component: {fileID: 1345686071}
-  - component: {fileID: 1345686076}
-  - component: {fileID: 1345686077}
-  - component: {fileID: 1345686078}
-  - component: {fileID: 1345686079}
-  - component: {fileID: 1345686080}
-  - component: {fileID: 1345686081}
-  - component: {fileID: 1345686082}
   - component: {fileID: 1345686083}
   - component: {fileID: 1345686084}
   m_Layer: 0
@@ -417,29 +409,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1345686071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4da936c27ce9d4948817843e28cd15a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 0.9999
-  forces: {x: 0, y: -10, z: 0}
-  pos: []
-  timer: 0.1
-  constraintp1: 
-  constraintp2: 
-  constraintp3: 
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  distanceshader: {fileID: 7200000, guid: c07ec9f4984433443978acf9d420f6f4, type: 3}
-  threadtimes: 1
 --- !u!64 &1345686072
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -515,144 +484,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: -0.109000005, y: 0.23700002, z: -0.083000004}
---- !u!114 &1345686076
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67b7f86c7517df348808f9a1b65b2420, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 0.9999
-  forces: {x: 0, y: -10, z: 0}
-  pos: []
-  timer: 0.1
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  distanceshader: {fileID: 7200000, guid: 026b5419829d427438c3a92781a9bda6, type: 3}
-  threadtimes: 1
---- !u!114 &1345686077
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b559d8b476e49bc4383416c5ed163125, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 0.9999
-  forces: {x: 0, y: 10, z: 0}
-  pos: []
-  timer: 0.1
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
-  threadtimes: 1
---- !u!114 &1345686078
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80e2acd2c40961e48aa3fe781d1d7464, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 0.9999
-  forces: {x: 0, y: -5, z: 0}
-  pos: []
-  timer: 0.075
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
---- !u!114 &1345686079
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 454481ba9a9d64641b176865917953af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 0.9999
-  forces: {x: 5, y: 0, z: 0}
-  pos: []
-  timer: 0.1
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
---- !u!114 &1345686080
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21b284e587bbfd749b9cbce2152b597c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 1
-  forces: {x: 0, y: -6, z: 0}
-  pos: []
-  timer: 0.1
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  updateshader: {fileID: 7200000, guid: 45d008d699f9687449ced310041a1e4b, type: 3}
-  distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
---- !u!114 &1345686081
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9dbb41530ccfdd0449886aecacd6e065, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 0.9999
-  forces: {x: 0, y: -6, z: 0}
-  pos: []
-  timer: 0.1
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  updateshader: {fileID: 7200000, guid: 45d008d699f9687449ced310041a1e4b, type: 3}
-  distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
---- !u!114 &1345686082
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1345686070}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b29d8deb54ab0f4583f3a4466e58bf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 1
-  forces: {x: 0, y: -6, z: 0}
-  pos: []
-  timer: 0.2
-  shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
-  updateshader: {fileID: 7200000, guid: 45d008d699f9687449ced310041a1e4b, type: 3}
-  distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}
 --- !u!114 &1345686083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -685,11 +516,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d155ef348bcebfd4786641b0499aac3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cellsize: 1
-  damp: 0.93
+  DistanceStiff: 0.5
+  BendingStiff: 0.1
+  damp: 0.95
   forces: {x: 0, y: -6, z: 0}
-  pos: []
-  timer: 0.15
+  timer: 0.13
   shader: {fileID: 7200000, guid: 0fad28e35b2e4d6489987df7167fe246, type: 3}
   updateshader: {fileID: 7200000, guid: 45d008d699f9687449ced310041a1e4b, type: 3}
   distanceshader: {fileID: 7200000, guid: 5597664031a93d84eb33c267459351cf, type: 3}

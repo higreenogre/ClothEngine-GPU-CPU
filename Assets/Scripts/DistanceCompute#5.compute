@@ -21,6 +21,7 @@ RWStructuredBuffer<float3> lp3;
 RWStructuredBuffer<float> stiffness;
 
 uint loopdistance;
+float distancestiff;
 float3 deltap;
 float3 deltap2;
 float3 deltap1;
@@ -45,8 +46,8 @@ void DistanceCompute (uint3 id : SV_DispatchThreadID)
                 deltap = lp1[j];
                 deltap1 = (weights[constraints[j].p1] / (weights[constraints[j].p1] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
                 deltap2 = (weights[constraints[j].p2] / (weights[constraints[j].p1] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
-                pos[constraints[j].p1] += 1.01f*deltap1;
-                pos[constraints[j].p2] -= 1.01f*deltap2;
+                pos[constraints[j].p1] += distancestiff * deltap1;
+                pos[constraints[j].p2] -= distancestiff * deltap2;
             }
             else if (i % 3 == 1)
             {
@@ -54,8 +55,8 @@ void DistanceCompute (uint3 id : SV_DispatchThreadID)
                 deltap = lp2[j];
                 deltap1 = (weights[constraints[j].p2] / (weights[constraints[j].p3] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
                 deltap2 = (weights[constraints[j].p3] / (weights[constraints[j].p3] + weights[constraints[j].p2])) * (length(deltap) - stiffness[i]) * normalize(deltap);
-                pos[constraints[j].p2] += 1.01f*deltap1;
-                pos[constraints[j].p3] -= 1.01f*deltap2;
+                pos[constraints[j].p2] += distancestiff * deltap1;
+                pos[constraints[j].p3] -= distancestiff * deltap2;
             }
             else
             {
@@ -63,8 +64,8 @@ void DistanceCompute (uint3 id : SV_DispatchThreadID)
                 deltap = lp3[j];
                 deltap1 = (weights[constraints[j].p3] / (weights[constraints[j].p3] + weights[constraints[j].p1])) * (length(deltap) - stiffness[i]) * normalize(deltap);
                 deltap2 = (weights[constraints[j].p1] / (weights[constraints[j].p3] + weights[constraints[j].p1])) * (length(deltap) - stiffness[i]) * normalize(deltap);
-                pos[constraints[j].p3] += 1.01f*deltap1;
-                pos[constraints[j].p1] -= 1.01f*deltap2;
+                pos[constraints[j].p3] += distancestiff * deltap1;
+                pos[constraints[j].p1] -= distancestiff * deltap2;
             }
         }
     }      

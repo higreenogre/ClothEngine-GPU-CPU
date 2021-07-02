@@ -9,11 +9,15 @@ public class ClothPlane10 : MonoBehaviour
     Mesh mesh;
 
     //grid settings
-    public float cellsize = 1;
+    [Range(0.01f, 1)]
+    public float DistanceStiff = 1f;
+    [Range(0.1f, 1)]
+    public float BendingStiff = 1f;
 
     //public Vector3 gridOffset;
     int gridLength;
     int gridTriLength;
+    [Range(0.1f, 1)]
     public float damp = 0.93f;
     public Vector3 forces;
     int tricount;
@@ -21,7 +25,7 @@ public class ClothPlane10 : MonoBehaviour
 
     //Position parameters
     Vector3[] fors;
-    public Vector3[] pos;
+    Vector3[] pos;
     Vector3[] p;
     Vector3[] vel;
     int[] triangles;
@@ -94,16 +98,26 @@ public class ClothPlane10 : MonoBehaviour
 
     #region Bending Constraint Parameters
 
+    public struct constraintbending
+    {
+        public uint p1, p2, p3, p4;
+        public Vector3 pp2, pp3, pp4, n1, n2, q1, q2, q3, q4, dp1, dp2, dp3, dp4;
+        public float d, cbend, cbendinit, sum;
+    }
+    constraintbending[] bending;
+    
+
     // Set Constraints
 
     int dihedralcount = 0;
+    uint loopbending;
     uint[] dihedralpairs;
     int bendingkernel;
 
     //Set Constraint Buffers
 
     public ComputeShader bendingshader;
-    ComputeBuffer dihedralpairsbuffer;
+    ComputeBuffer bendingbuffer;
 
     #endregion
 
@@ -123,6 +137,9 @@ public class ClothPlane10 : MonoBehaviour
 
     // Start is called before the first frame update
     void Awake()
+    {
+        mesh = GetComponent<MeshFilter>().mesh;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -149,14 +166,12 @@ public class ClothPlane10 : MonoBehaviour
 
         velocitydispatch();
 
-        //Self Constraint
+        //Constraint
 
         SelfCollisionConstraint();
-
-        //Distance Constraint
-
         DistanceConstraint();
-
+        //BendingConstraintGPU();
+        BendingConstraintCPU();
 
         //velocity update
 
@@ -220,7 +235,7 @@ public class ClothPlane10 : MonoBehaviour
         weights[0] = 0f;
         //weights[10] = 0f;
         //weights[6] = 2f;
-        //weights[110] = 0f;
+        weights[120] = 0f;
         //weights[50] = 0f;
 
         fors[0] = forces; // assigning force to the array for buffer
@@ -511,6 +526,7 @@ public class ClothPlane10 : MonoBehaviour
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("pos"), Pbuffer);
         distanceshader.SetInt(Shader.PropertyToID("loopdistance"), loopdistance);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("stiffness"), stiffnessbuffer);
+        distanceshader.SetFloat(Shader.PropertyToID("distancestiff"), DistanceStiff);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("constraints"), constraintbuffer);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("lp1"), lengthp1);
         distanceshader.SetBuffer(distancekernel, Shader.PropertyToID("lp2"), lengthp2);
@@ -551,29 +567,29 @@ public class ClothPlane10 : MonoBehaviour
             {
                 if (x < y)
                 {
-                    commonvertex1 = 0;
-                    commonvertex2 = 0;
-                    commonvertex3 = 0;
+                    commonvertex1 = -1;
+                    commonvertex2 = -1;
+                    commonvertex3 = -1;
 
                     for (int z = 0; z < 3; z++)
                     {
                         if (triangles[3 * x + 0] == triangles[3 * y + z])
                         {
-                            commonvertex1++;
+                            commonvertex1 = triangles[3 * x + 0];
                         }
 
                         if (triangles[3 * x + 1] == triangles[3 * y + z])
                         {
-                            commonvertex2++;
+                            commonvertex2 = triangles[3 * x + 1];
                         }
 
                         if (triangles[3 * x + 2] == triangles[3 * y + z])
                         {
-                            commonvertex3++;
+                            commonvertex3 = triangles[3 * x + 2];
                         }
                     }
 
-                    if ((commonvertex1 == 1 && commonvertex2 == 1) || (commonvertex3 == 1 && commonvertex2 == 1) || (commonvertex1 == 1 && commonvertex3 == 1))
+                    if ((commonvertex1 > -1 && commonvertex2 > -1) || (commonvertex3 > -1 && commonvertex2 > -1) || (commonvertex1 > -1 && commonvertex3 > -1))
                     {
                         dihedralcount++;
                     }
@@ -582,7 +598,7 @@ public class ClothPlane10 : MonoBehaviour
         }
 
         Debug.Log("Dihedral pairs = " + dihedralcount);
-        dihedralpairs = new uint[2 * dihedralcount];  //Where we initializethe size
+        bending = new constraintbending[dihedralcount];  //Where we initializethe size
 
         // Assigning the the pairs for Dihedral pairs
 
@@ -592,60 +608,221 @@ public class ClothPlane10 : MonoBehaviour
             {
                 if (x < y)
                 {
-                    commonvertex1 = 0;
-                    commonvertex2 = 0;
-                    commonvertex3 = 0;
+                    commonvertex1 = -1;
+                    commonvertex2 = -1;
+                    commonvertex3 = -1;
 
                     for (int z = 0; z < 3; z++)
                     {
                         if (triangles[3 * x + 0] == triangles[3 * y + z])
                         {
-                            commonvertex1++;
+                            commonvertex1 = triangles[3 * x + 0];
                         }
 
                         if (triangles[3 * x + 1] == triangles[3 * y + z])
                         {
-                            commonvertex2++;
+                            commonvertex2 = triangles[3 * x + 1];
                         }
 
                         if (triangles[3 * x + 2] == triangles[3 * y + z])
                         {
-                            commonvertex3++;
+                            commonvertex3 = triangles[3 * x + 2];
                         }
                     }
 
-                    if ((commonvertex1 == 1 && commonvertex2 == 1) || (commonvertex3 == 1 && commonvertex2 == 1) || (commonvertex1 == 1 && commonvertex3 == 1))
+                    if ((commonvertex1 > -1 && commonvertex2 > -1) || (commonvertex3 > -1 && commonvertex2 > -1) || (commonvertex1 > -1 && commonvertex3 > -1))
                     {
-                        dihedralpairs[2 * pairindex] = (uint) x;
-                        dihedralpairs[2 * pairindex + 1] = (uint) y;
+                        if (commonvertex1 > -1 && commonvertex2 > -1)
+                        {
+                            bending[pairindex].p1 = (uint)commonvertex1;
+                            bending[pairindex].p2 = (uint)commonvertex2;
+                            
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (triangles[3 * x + j] != commonvertex1 && triangles[3 * x + j] != commonvertex2)
+                                {
+                                    bending[pairindex].p3 = (uint)triangles[3 * x + j];
+                                    break;
+                                }
+                            }
+
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (triangles[3 * y + j] != commonvertex1 && triangles[3 * y + j] != commonvertex2)
+                                {
+                                    bending[pairindex].p4 = (uint)triangles[3 * y + j];
+                                    break;
+                                }
+                            }
+                        }
+
+                        else if (commonvertex3 > -1 && commonvertex2 > -1)
+                        {
+                            bending[pairindex].p1 = (uint)commonvertex2;
+                            bending[pairindex].p2 = (uint)commonvertex3;
+
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (triangles[3 * x + j] != commonvertex3 && triangles[3 * x + j] != commonvertex2)
+                                {
+                                    bending[pairindex].p3 = (uint)triangles[3 * x + j];
+                                    break;
+                                }
+                            }
+
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (triangles[3 * y + j] != commonvertex3 && triangles[3 * y + j] != commonvertex2)
+                                {
+                                    bending[pairindex].p4 = (uint)triangles[3 * y + j];
+                                    break;
+                                }
+                            }
+                        }
+
+                        else
+                        {
+                            bending[pairindex].p1 = (uint)commonvertex3;
+                            bending[pairindex].p2 = (uint)commonvertex1;
+
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (triangles[3 * x + j] != commonvertex1 && triangles[3 * x + j] != commonvertex3)
+                                {
+                                    bending[pairindex].p3 = (uint)triangles[3 * x + j];
+                                    break;
+                                }
+                            }
+
+                            for (int j = 0; j < 3; j++)
+                            {
+                                if (triangles[3 * y + j] != commonvertex1 && triangles[3 * y + j] != commonvertex3)
+                                {
+                                    bending[pairindex].p4 = (uint)triangles[3 * y + j];
+                                    break;
+                                }
+                            }
+                        }
+
                         pairindex++;
                     }
                 }
             }
         }
 
+        /*for (int l = 0; l < dihedralcount ; l++)
+        {
+            Debug.Log(" dihedral " + l + " = " + bending[l].p1 +" "+ bending[l].p2 + " " + bending[l].p3 + " " + bending[l].p4);
+        }*/
+
+        loopbending = (uint)dihedralcount;
         // Assigning Buffer Size
 
         bendingkernel = bendingshader.FindKernel("BendingCompute");
 
-        dihedralpairsbuffer = new ComputeBuffer(dihedralcount * 2, 4);
-        dihedralpairsbuffer.SetData(dihedralpairs);
+        bendingbuffer = new ComputeBuffer(dihedralcount , 4 * 4 + 4 * 13 * 3 + 4 * 4);
+        bendingbuffer.SetData(bending);
+
+        //initial bending
+        for (int i = 0; i < loopbending; i++)
+        {
+
+            bending[i].pp2 = pos[bending[i].p2] - pos[bending[i].p1];
+            bending[i].pp3 = pos[bending[i].p3] - pos[bending[i].p1];
+            bending[i].pp4 = pos[bending[i].p4] - pos[bending[i].p1];
+
+            bending[i].n1 = Vector3.Normalize(Vector3.Cross(bending[i].pp2, bending[i].pp3));
+            bending[i].n2 = Vector3.Normalize(Vector3.Cross(bending[i].pp2, bending[i].pp4));
+
+            bending[i].d = Vector3.Dot(bending[i].n1, bending[i].n2);
+            bending[i].cbendinit = Mathf.Acos(bending[i].d);
+        }
 
     }
 
-    void BendingConstraint()
+    void BendingConstraintGPU()
     {
         Pbuffer.SetData(pos);
 
         bendingshader.SetBuffer(bendingkernel, Shader.PropertyToID("weights"), Wbuffer);
         bendingshader.SetBuffer(bendingkernel, Shader.PropertyToID("pos"), Pbuffer);
-        bendingshader.SetBuffer(bendingkernel,Shader.PropertyToID("dihedralpairs"), dihedralpairsbuffer);
+        bendingshader.SetBuffer(bendingkernel,Shader.PropertyToID("bending"), bendingbuffer);
         bendingshader.SetInt(Shader.PropertyToID("loopbending"), dihedralcount);
 
         bendingshader.Dispatch(bendingkernel, 1, 1, 1);
 
         Pbuffer.GetData(pos);
 
+    }
+
+    void BendingConstraintCPU()
+    {
+        for (int iter = 0; iter < 30; iter++)
+        {
+            for (int i = 0; i < loopbending; i++)
+            {
+
+                bending[i].pp2 = pos[bending[i].p2] - pos[bending[i].p1];
+                bending[i].pp3 = pos[bending[i].p3] - pos[bending[i].p1];
+                bending[i].pp4 = pos[bending[i].p4] - pos[bending[i].p1];
+
+                bending[i].n1 = Vector3.Normalize(Vector3.Cross(bending[i].pp2, bending[i].pp3));
+                bending[i].n2 = Vector3.Normalize(Vector3.Cross(bending[i].pp2, bending[i].pp4));
+
+                bending[i].d = Vector3.Dot(bending[i].n1, bending[i].n2);
+                bending[i].cbend = Mathf.Acos(bending[i].d) - bending[i].cbendinit;
+
+                if (!System.Single.IsNaN(bending[i].cbend) || bending[i].cbend < 0f)
+                {
+                    //Debug.Log(bending[i].cbend);
+
+
+                    bending[i].q3 = (Vector3.Cross(bending[i].pp2, bending[i].n2) + bending[i].d * Vector3.Cross(bending[i].n1, bending[i].pp2)) / (Vector3.Cross(bending[i].pp2, bending[i].pp3).magnitude);
+                    bending[i].q4 = (Vector3.Cross(bending[i].pp2, bending[i].n1) + bending[i].d * Vector3.Cross(bending[i].n2, bending[i].pp2)) / (Vector3.Cross(bending[i].pp2, bending[i].pp4).magnitude);
+                    bending[i].q2 = -((Vector3.Cross(bending[i].pp3, bending[i].n2) + bending[i].d * Vector3.Cross(bending[i].n1, bending[i].pp3)) / (Vector3.Cross(bending[i].pp2, bending[i].pp3).magnitude))
+                                    - ((Vector3.Cross(bending[i].pp4, bending[i].n1) + bending[i].d * Vector3.Cross(bending[i].n2, bending[i].pp4)) / (Vector3.Cross(bending[i].pp2, bending[i].pp4).magnitude));
+                    bending[i].q1 = -bending[i].q2 - bending[i].q3 - bending[i].q4;
+
+                    bending[i].sum = weights[bending[i].p1] * (bending[i].q1.sqrMagnitude)
+                                   + weights[bending[i].p2] * (bending[i].q2.sqrMagnitude)
+                                   + weights[bending[i].p3] * (bending[i].q3.sqrMagnitude)
+                                   + weights[bending[i].p4] * (bending[i].q4.sqrMagnitude);
+                    //Debug.Log(bending[i].q1);
+
+                    //float scale = - bendingstiff;
+
+                    bending[i].dp1 = -BendingStiff * (-weights[bending[i].p1] * Mathf.Sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q1) / bending[i].sum;
+                    bending[i].dp2 = -BendingStiff * (-weights[bending[i].p2] * Mathf.Sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q2) / bending[i].sum;
+                    bending[i].dp3 = -BendingStiff * (-weights[bending[i].p3] * Mathf.Sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q3) / bending[i].sum;
+                    bending[i].dp4 = -BendingStiff * (-weights[bending[i].p4] * Mathf.Sqrt(1.0f - bending[i].d * bending[i].d) * bending[i].cbend * bending[i].q4) / bending[i].sum;
+
+                    /*********  Correcting NaN error *********/
+
+                    bending[i].dp1.x = System.Single.IsNaN(bending[i].dp1.x) ? 0f : bending[i].dp1.x;
+                    bending[i].dp1.y = System.Single.IsNaN(bending[i].dp1.y) ? 0f : bending[i].dp1.y;
+                    bending[i].dp1.z = System.Single.IsNaN(bending[i].dp1.z) ? 0f : bending[i].dp1.z;
+
+                    bending[i].dp2.x = System.Single.IsNaN(bending[i].dp2.x) ? 0f : bending[i].dp2.x;
+                    bending[i].dp2.y = System.Single.IsNaN(bending[i].dp2.y) ? 0f : bending[i].dp2.y;
+                    bending[i].dp2.z = System.Single.IsNaN(bending[i].dp2.z) ? 0f : bending[i].dp2.z;
+
+                    bending[i].dp3.x = System.Single.IsNaN(bending[i].dp3.x) ? 0f : bending[i].dp3.x;
+                    bending[i].dp3.y = System.Single.IsNaN(bending[i].dp3.y) ? 0f : bending[i].dp3.y;
+                    bending[i].dp3.z = System.Single.IsNaN(bending[i].dp3.z) ? 0f : bending[i].dp3.z;
+
+                    bending[i].dp4.x = System.Single.IsNaN(bending[i].dp4.x) ? 0f : bending[i].dp4.x;
+                    bending[i].dp4.y = System.Single.IsNaN(bending[i].dp4.y) ? 0f : bending[i].dp4.y;
+                    bending[i].dp4.z = System.Single.IsNaN(bending[i].dp4.z) ? 0f : bending[i].dp4.z;
+
+                    //Debug.Log(bending[i].dp1);
+
+                    pos[bending[i].p1] -= bending[i].dp1;
+                    pos[bending[i].p2] -= bending[i].dp2;
+                    pos[bending[i].p3] -= bending[i].dp3;
+                    pos[bending[i].p4] -= bending[i].dp4;
+                }
+            }
+        }
     }
 
     #endregion
@@ -713,7 +890,7 @@ public class ClothPlane10 : MonoBehaviour
                         {
                             detectioncount++;
 
-                            if (collisiondistance < maxstiff)
+                            if (collisiondistance < 2f)
                             {
                                 float thickness = h;
                                 float scale = -0.09f;
