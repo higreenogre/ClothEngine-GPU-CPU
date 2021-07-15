@@ -64,6 +64,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\Ciconia Studio\_Shared Files\Scripts\Demo\FreeCam.cs" />
+    <Compile Include="Assets\Ciconia Studio\_Shared Files\Scripts\Demo\FreeCamera.cs" />
+    <Compile Include="Assets\Ciconia Studio\_Shared Files\Scripts\Demo\SuperCamera.cs" />
+    <Compile Include="Assets\Ciconia Studio\_Shared Files\Scripts\Demo\UIButton_ShowNext.cs" />
     <Compile Include="Assets\Scripts Old\ClothPlane.cs" />
     <Compile Include="Assets\Scripts Old\ClothPlane2.cs" />
     <Compile Include="Assets\Scripts Old\ClothPlane3.cs" />
@@ -85,14 +89,21 @@
     <None Include="Assets\Scripts Old\DistanceConstraintCompute.compute" />
     <None Include="Assets\Scripts Old\DistanceCompute#1.compute" />
     <None Include="Assets\Scripts Old\DistanceCompute#2.compute" />
+    <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Standard (Specular setup) Opaque.shader" />
     <None Include="Assets\Scripts\BendingCompute#1.compute" />
     <None Include="Assets\Scripts Old\ConstraintCompute.compute" />
     <None Include="Assets\Scripts\Update Velocity.compute" />
     <None Include="Assets\Scripts\DistanceCompute#5.compute" />
     <None Include="Assets\Scripts Old\Test.compute" />
+    <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Standard (Specular setup) Transparent.shader" />
+    <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Lite Standard (Specular setup) Transparent.shader" />
+    <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\Readme.txt" />
+    <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Lite Standard (Specular setup) Opaque.shader" />
+    <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Lite Standard (Specular setup) Cutout.shader" />
     <None Include="Assets\Scripts Old\DistanceCompute#4.compute" />
     <None Include="Assets\Scripts Old\Solver2.compute" />
     <None Include="Assets\Scripts\Solver.compute" />
+    <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Standard (Specular setup) Cutout.shader" />
     <None Include="Assets\Scripts\SelfCollisionCompute#1.compute" />
     <Reference Include="UnityEngine">
       <HintPath>D:/Programming/Unity/Personal/2019.4.16f1/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

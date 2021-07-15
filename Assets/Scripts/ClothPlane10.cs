@@ -7,11 +7,12 @@ public class ClothPlane10 : MonoBehaviour
     #region initialisation
     //Mesh
     Mesh mesh;
+    MeshCollider meshCollider;
 
     //grid settings
     [Range(0.01f, 1)]
     public float DistanceStiff = 1f;
-    [Range(0.1f, 1)]
+    [Range(0.0f, 1)]
     public float BendingStiff = 1f;
 
     //public Vector3 gridOffset;
@@ -139,12 +140,17 @@ public class ClothPlane10 : MonoBehaviour
     void Awake()
     {
         mesh = GetComponent<MeshFilter>().mesh;
+        
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        
+
         MakeProceduralGrid();
+
+        meshCollider = GetComponent<MeshCollider>();
 
         GraphColoring();
 
@@ -166,16 +172,20 @@ public class ClothPlane10 : MonoBehaviour
 
         velocitydispatch();
 
-        //Constraint
+        //***************Constraint********************//
+
+        //External();
+        /*void OnCollisionEnter()
+        {
+            Debug.Log("");
+        }*/
 
         SelfCollisionConstraint();
-        DistanceConstraint();
+        OnDistanceConstraintGPU();
         //BendingConstraintGPU();
         BendingConstraintCPU();
 
-        //velocity update
-
-        velocityupdate();
+        velocityupdate(); //velocity update
 
         //DistanceConstraint();
 
@@ -189,14 +199,28 @@ public class ClothPlane10 : MonoBehaviour
         mesh.vertices = pos;
         mesh.triangles = triangles;
 
+        
         mesh.RecalculateNormals();
+        
+        meshCollider.sharedMesh = mesh;
+
 
     }
+
+    #region External
+
+    void OnCollisionEnter(Collision collision)
+    {
+        Debug.Log(collision.contacts);
+    }
+
+    #endregion
 
     /*void OnDestroy()
     {
         Trilistbuffer.Dispose();
     }*/
+
 
     #region Making Grid
     void MakeProceduralGrid()
@@ -235,7 +259,7 @@ public class ClothPlane10 : MonoBehaviour
         weights[0] = 0f;
         //weights[10] = 0f;
         //weights[6] = 2f;
-        weights[120] = 0f;
+        //weights[120] = 0f;
         //weights[50] = 0f;
 
         fors[0] = forces; // assigning force to the array for buffer
@@ -515,7 +539,7 @@ public class ClothPlane10 : MonoBehaviour
 
     }
 
-    void DistanceConstraint()
+    void OnDistanceConstraintGPU()
     {
         Pbuffer.SetData(pos);
         lengthp1.SetData(lp1);
@@ -890,10 +914,10 @@ public class ClothPlane10 : MonoBehaviour
                         {
                             detectioncount++;
 
-                            if (collisiondistance < 2f)
+                            if (collisiondistance < 1.5f)
                             {
                                 float thickness = h;
-                                float scale = -0.09f;
+                                float scale = -0.2f;
                                 delp1 = n;
                                 delp3 = (Vector3.Cross(p4 - p2, p1 - p2) + Vector3.Cross(n, p4 - p2) * h) / length;
                                 delp4 = -1f * (Vector3.Cross(p3 - p2, p1 - p2) + Vector3.Cross(n, p3 - p2) * h) / length;
