@@ -16,7 +16,7 @@ RWStructuredBuffer<float> weights;
 float timer;
 float damp;
 
-[numthreads(32,1,1)]
+[numthreads(800,1,1)]
 void trydispatch (uint3 id : SV_DispatchThreadID)
 {
     vel[id.x] = damp * ( vel[id.x] + timer * forces[0]  * weights[id.x]);

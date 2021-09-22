@@ -152,7 +152,7 @@ public class ClothPlane10 : MonoBehaviour
 
         meshCollider = GetComponent<MeshCollider>();
 
-        GraphColoring();
+        //GraphColoring();
 
         ForDistanceConstraints();
 

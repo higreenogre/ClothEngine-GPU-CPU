@@ -16,7 +16,7 @@ RWStructuredBuffer<float3> pos;
 
 uint loopbending;
 
-[numthreads(300,1,1)]
+[numthreads(800,1,1)]
 void BendingCompute (uint3 id : SV_DispatchThreadID)
 {
     for (uint i=0; i< loopbending; i++)

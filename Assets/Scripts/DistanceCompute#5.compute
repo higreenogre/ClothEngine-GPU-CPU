@@ -28,10 +28,10 @@ float3 deltap1;
 uint iterations;
 uint j;
 
-[numthreads(300,1,1)]
+[numthreads(800,1,1)]
 void DistanceCompute (uint3 id : SV_DispatchThreadID)
 {
-    for (int iter=0; iter<15; iter++)
+    for (int iter=0; iter<30; iter++)
     {
         for (uint i=0;i< loopdistance;i++)
         {

@@ -68,6 +68,16 @@
     <Compile Include="Assets\Ciconia Studio\_Shared Files\Scripts\Demo\FreeCamera.cs" />
     <Compile Include="Assets\Ciconia Studio\_Shared Files\Scripts\Demo\SuperCamera.cs" />
     <Compile Include="Assets\Ciconia Studio\_Shared Files\Scripts\Demo\UIButton_ShowNext.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\BakeTexturesAtRuntime\BakeTexturesAtRuntime.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\BatchPrepareObjectsForDynamicBatching\MB_BatchPrepareObjectsForDynamicBatchingDescription.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\CharacterCustomization\MB_SwapShirts.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\PrepareObjectsForDynamicBatching\MB_PrepareObjectsForDynamicBatchingDescription.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\SceneDynamicAddDelete\MB_DynamicAddDeleteExample.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\SceneRuntimeExample\MB_Example.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\SceneRuntimeExample\MB_ExampleMover.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\SceneRuntimeExample\MB_ExampleSkinnedMeshDescription.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\SkinnedMeshRenderer\MB_SkinnedMeshSceneController.cs" />
+    <Compile Include="Assets\MeshBaker\Examples\SwitchBakedObjectsTexture\MB_SwitchBakedObjectsTexture.cs" />
     <Compile Include="Assets\Scripts Old\ClothPlane.cs" />
     <Compile Include="Assets\Scripts Old\ClothPlane2.cs" />
     <Compile Include="Assets\Scripts Old\ClothPlane3.cs" />
@@ -83,21 +93,32 @@
     <Compile Include="Assets\Scripts Old\Shrink6.cs" />
     <Compile Include="Assets\Scripts Old\Shrink7.cs" />
     <Compile Include="Assets\Scripts\ClothPlane10.cs" />
+    <Compile Include="Assets\Scripts\ClothPlane11.cs" />
     <Compile Include="Assets\Scripts\ClothPlane7.cs" />
     <Compile Include="Assets\Scripts\ClothPlane8.cs" />
     <Compile Include="Assets\Scripts\ClothPlane9.cs" />
+    <Compile Include="Assets\Scripts\Mesh_Stitching.cs" />
     <None Include="Assets\Scripts Old\DistanceConstraintCompute.compute" />
     <None Include="Assets\Scripts Old\DistanceCompute#1.compute" />
     <None Include="Assets\Scripts Old\DistanceCompute#2.compute" />
     <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Standard (Specular setup) Opaque.shader" />
+    <None Include="Assets\MeshBaker\Resources\Shaders\AlbedoShader.shader" />
+    <None Include="Assets\MeshBaker\Release Notes.txt" />
     <None Include="Assets\Scripts\BendingCompute#1.compute" />
     <None Include="Assets\Scripts Old\ConstraintCompute.compute" />
     <None Include="Assets\Scripts\Update Velocity.compute" />
     <None Include="Assets\Scripts\DistanceCompute#5.compute" />
+    <None Include="Assets\MeshBaker\Resources\Shaders\UnlitWithAlpha.shader" />
+    <None Include="Assets\MeshBaker\Examples\Shaders\UnlitTextureArrays.shader" />
+    <None Include="Assets\SimplestMeshBaker\Readme.txt" />
     <None Include="Assets\Scripts Old\Test.compute" />
     <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Standard (Specular setup) Transparent.shader" />
+    <None Include="Assets\MeshBaker\Resources\Shaders\NormalMapShader.shader" />
+    <None Include="Assets\MeshBaker\MeshBakerWorkingFolder\DONT_DELETE.txt" />
     <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Lite Standard (Specular setup) Transparent.shader" />
+    <None Include="Assets\MeshBaker\README.txt" />
     <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\Readme.txt" />
+    <None Include="Assets\MeshBaker\Examples\CharacterCustomization\CreditForModel.txt" />
     <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Lite Standard (Specular setup) Opaque.shader" />
     <None Include="Assets\Ciconia Studio\Shaders\Standard Shaders\BuiltIn\CS_Lite Standard (Specular setup) Cutout.shader" />
     <None Include="Assets\Scripts Old\DistanceCompute#4.compute" />
@@ -664,7 +685,16 @@
       <HintPath>C:/Users/grghe/Google Drive/AIMAGE/Code/ClothEngine/ClothEngine-GPU-CPU/Library/ScriptAssemblies/UnityEditor.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
-  <ItemGroup></ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="MeshBakerCore.csproj">
+      <Project>{60BD7AA6-A5A0-8CBB-CE8C-E5FD8DEBD8F9}</Project>
+      <Name>MeshBakerCore</Name>
+    </ProjectReference>
+    <ProjectReference Include="MeshBakerEditor.csproj">
+      <Project>{ACBB7830-B1AF-CF5A-B3EC-71A8643F9EFD}</Project>
+      <Name>MeshBakerEditor</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
